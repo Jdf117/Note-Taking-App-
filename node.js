@@ -59,9 +59,12 @@ app.post("/note", async (req, res) => {
         res.status(201).send("Note added successfully");
     } 
     catch (err) {
-        console.log(err);
+        console.log("Could not add Note");
     }
-
 });
+
+app.delete('/notes/:id', async (req, res) => {
+
+})
 
 app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
