@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <title>Dooli-Note-It! App - Log In</title>
+    <title>Note-It! App - Log In</title>
 </head>
 <body>
     <%- include('../partials/header')%>
 
+    <h1>Welcome to Note-It!</h1>
+    <form action="/login" method="post"> <!-- action is applied when you have a button of type "submit" -->  
+        <div> 
+            <label for="username">Username:</label>
+            <input placeholder="Username" type="text" name="username" id="username" required>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" required>
+        </div>
+        <div>
+            <button type="submit">Login</button> 
+        </div>
+    </form>
 
 </body>
 </html>
