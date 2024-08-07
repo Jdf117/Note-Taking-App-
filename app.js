@@ -7,7 +7,7 @@ const bodyParser = require("body-parser");
 const PORT = 3000;
 
 const notesRouter = require("./routes/notesRouter");
-const User = require("./models/userSchema");
+//const User = require("./models/userSchema");
 
 app.use(express.json());
 app.use(bodyParser.json());

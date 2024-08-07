@@ -29,7 +29,7 @@ router.post("/note", async (req, res) => {
     const id = notes.length + 1;
     console.log("Note ID: " +  id);
     try{
-        const newNote = new Note({id, title, content});
+        const newNote = new Note({ id, title, content});
         console.log(newNote);
         await newNote.save();
         res.status(201).send("Note added successfully");
@@ -41,12 +41,12 @@ router.post("/note", async (req, res) => {
 
 //Delete note via ID 
 router.delete('/notes/:id', async (req, res) => {
-    const id = req.params.id;
+    const id = parseInt(req.params.id);
     try{
         // need to check if note exists 
-        const note = await Note.findById(id);
+        const note = await Note.findOne({id});
         if(note){
-            await Note.deleteOne({_id: new mongoose.Types.ObjectId(id)});
+            await Note.deleteOne({id});
             res.status(200).send("Note deleted successfully");
         } 
         //else {
@@ -54,19 +54,23 @@ router.delete('/notes/:id', async (req, res) => {
         //}
 
     } catch(err){
-        res.send("Could not delete the note");
+        res.status(404).send("Could not delete the note");
     }
 })
 //delete all
 router.delete('/delete-notes', async (req,res) => {
+    const Notes = await Note.find();
+    console.log(Notes);
     try{
-        if(!Note.length() == 0 ){
-            await Note.deleteMany({});
+        
+        if(!Notes.length == 0 ){
+            console.log("Note not empty");
+            await Note.deleteMany();
             res.status(200).send("Deleted all notes");
         } 
 
     } catch (err){
-        res.send("Could not delete notes");
+        res.status(404).send("Could not delete notes");
     }
 });
 
