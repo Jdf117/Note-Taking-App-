@@ -76,7 +76,7 @@ router.delete('/delete-notes', async (req,res) => {
 
 //Update Note via ID 
 router.put("/update-note/:id", async (req, res) => {
-    const noteId = parseInt(req.params.id);
+    const noteId = parseInt(req.params.id); //this gets a string
     //const notes = await Note.find();
  
     try{
