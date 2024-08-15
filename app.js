@@ -4,6 +4,11 @@ const app = express();
 const mongoose = require('mongoose');
 const path = require("path");
 const bodyParser = require("body-parser");
+
+//Auth0
+const { auth } = require('express-openid-connect');
+const { requiresAuth } = require('express-openid-connect');
+
 const PORT = 3000;
 
 const notesRouter = require("./routes/notesRouter");
@@ -26,7 +31,32 @@ async function connectToMongo() {
     }
 }
 connectToMongo();//run function to connect
+
+
+//Auth0 config 
+const config = {
+  authRequired: false,
+  auth0Logout: true,
+  baseURL: 'http://localhost:3000',
+  clientID: 'DIhQg8ebNlcXkb22eRBgJZgRjlJ4hNP7',
+  issuerBaseURL: 'https://dev-r36sqwzrgh0z56eq.ca.auth0.com',
+  secret: 'LONG_RANDOM_STRING'
+};
+
+// auth router attaches /login, /logout, and /callback routes to the baseURL
+app.use(auth(config));
+
+// req.isAuthenticated is provided from the auth router
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
+});
  
+
+
+app.get('/profile', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
+
 // let Notes = [
 //     { title: 'Welcome to Note-it!', content: "Start adding notes today!"}
 // ];
