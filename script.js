@@ -3,6 +3,7 @@ document.getElementById('get-notes-button').addEventListener('click', async func
         const response = await fetch('/notes');
         if(response.ok){
             const notes = await response.json();
+            console.log(notes);
             displayNotes(notes);
         } else {
             console.error('Failed to fetch notes');

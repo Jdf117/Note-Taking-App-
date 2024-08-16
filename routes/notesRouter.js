@@ -10,7 +10,7 @@ const Note = schema.Note;
 //Gets the full list of notes
 router.get("/notes",requiresAuth(), async (req, res) => {
     console.log("finding notes");
-    const  notes = await Note.find();
+    const  notes = await Note.find(user_id);
 
     if(notes.length > 0){
         console.log("Notes exist");
@@ -24,13 +24,14 @@ router.get("/notes",requiresAuth(), async (req, res) => {
 
 //Creates a new note. If no title is specified, it will default to today's date
 router.post("/note", async (req, res) => {
+    const user_id = req.oidc.user;
     const title = req.body.title; 
     const content = req.body.content;
     const  notes = await Note.find();
     const id = notes.length + 1;
     console.log("Note ID: " +  id);
     try{
-        const newNote = new Note({ id, title, content});
+        const newNote = new Note({ user_id, id, title, content});
         console.log(newNote);
         await newNote.save();
         res.status(201).send("Note added successfully");

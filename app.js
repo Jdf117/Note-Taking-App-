@@ -18,6 +18,13 @@ app.use(express.json());
 app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
+
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from the 'public' directory
+app.use(express.static(path.join(__dirname, '')));
+
+
 //Mongo Database connection setup
 const MONGO_URI = "mongodb://localhost:27017/DooliNoteIt"
 
