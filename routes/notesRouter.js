@@ -4,10 +4,11 @@ const mongoose = require("mongoose");
 
 //include schema
 const schema = require("../models/noteSchema");
+const { requiresAuth } = require("express-openid-connect");
 const Note = schema.Note;
 
 //Gets the full list of notes
-router.get("/notes", async (req, res) => {
+router.get("/notes",requiresAuth(), async (req, res) => {
     console.log("finding notes");
     const  notes = await Note.find();
 
