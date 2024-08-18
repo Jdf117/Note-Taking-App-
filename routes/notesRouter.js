@@ -10,7 +10,8 @@ const Note = schema.Note;
 //Gets the full list of notes
 router.get("/notes",requiresAuth(), async (req, res) => {
     console.log("finding notes");
-    const  notes = await Note.find(user_id);
+    const userId = req.oidc.user.sub; // this will give you the user ID of the current user provided by Auth0
+    const  notes = await Note.find({user_id: userId});
 
     if(notes.length > 0){
         console.log("Notes exist");
@@ -22,9 +23,10 @@ router.get("/notes",requiresAuth(), async (req, res) => {
 })
 
 
-//Creates a new note. If no title is specified, it will default to today's date
-router.post("/note", async (req, res) => {
-    const user_id = req.oidc.user;
+//Creates a new note. If no title is specified, it will default to today's date. 
+//Each note will include the user ID 
+router.post("/note", requiresAuth(), async (req, res) => {
+    const user_id = req.oidc.user.sub; //sub, short for subject, is a stnadrd OpenID Connect claim that uniquely identifies the user
     const title = req.body.title; 
     const content = req.body.content;
     const  notes = await Note.find();
@@ -42,48 +44,53 @@ router.post("/note", async (req, res) => {
 });
 
 //Delete note via ID 
-router.delete('/notes/:id', async (req, res) => {
+router.delete('/notes/:id', requiresAuth(), async (req, res) => {
+    const userId = req.oidc.user.sub;
     const id = parseInt(req.params.id);
     try{
-        // need to check if note exists 
-        const note = await Note.findOne({id});
+        // need to check if note exists and if the note has the correct user ID 
+        const note = await Note.findOne({id: id, user_id: userId});
         if(note){
             await Note.deleteOne({id});
             res.status(200).send("Note deleted successfully");
         } 
-        //else {
-            //res.status(404).send("Note not found");
-        //}
+        else {
+            res.status(404).send("Note not found");
+        }
 
     } catch(err){
-        res.status(404).send("Could not delete the note");
+        res.status(500).send("Could not delete the note");
     }
 })
+
 //delete all
-router.delete('/delete-notes', async (req,res) => {
-    const Notes = await Note.find();
+router.delete('/delete-notes', requiresAuth(), async (req,res) => {
+    const userId = req.oidc.user.sub;
+    const Notes = await Note.find({user_id: userId});
     console.log(Notes);
-    try{
-        
-        if(!Notes.length == 0 ){
-            console.log("Note not empty");
-            await Note.deleteMany();
+    try{ 
+        if(Notes.length > 0 ){
+            //console.log("Note not empty");
+            await Note.deleteMany({user_id: userId});
             res.status(200).send("Deleted all notes");
-        } 
+        } else {
+            res.status(404).send("No notes to delete");
+        }
 
     } catch (err){
-        res.status(404).send("Could not delete notes");
+        res.status(500).send("Could not delete notes");
     }
 });
 
-//Update Note via ID 
-router.put("/update-note/:id", async (req, res) => {
+//Update Note via note Id and User Id for authentication --- end point has two filters note-id and user-id 
+router.put("/update-note/:id", requiresAuth(), async (req, res) => {
     const noteId = parseInt(req.params.id);
+    const userId = req.params.user.sub; 
     //const notes = await Note.find();
  
     try{
         const updatedNote = await Note.findOneAndUpdate(
-            {id: noteId},
+            {id: noteId, user_id: userId},
             {
                 title: req.body.title, 
                 content:req.body.content
