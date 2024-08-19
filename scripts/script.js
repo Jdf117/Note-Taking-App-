@@ -46,6 +46,9 @@ function displayNotes(notes) {
         button.addEventListener('click', handleDelete);
         console.log(`Event listener attached to ${button.id}`); // Debugging: Confirm listener attachment
     });
+
+    //add event listener for Update button
+    //update button should bring up a modul with the existing note title and content. Allowing you to edit and make updates.
 }
 
 // Event handler for delete button clicks
@@ -62,6 +65,13 @@ async function handleDelete(event) {
         if(response.ok){
             console.log(`Note ${noteId} deleted successfully`);
             // Optionally re-fetch or update the displayed notes here
+            // Remove the card from the DOM
+            const cardToRemove = event.target.closest('.card');
+                if (cardToRemove) {
+                    cardToRemove.remove();
+                    console.log(`Card for note ${noteId} removed from the screen`);
+            }
+
         } else {
             console.error('Failed to delete note');
         }
