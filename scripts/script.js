@@ -1,18 +1,71 @@
-// Get all Notes using button on index page 
+// // Get all Notes using button on index page 
 document.getElementById('get-notes-button').addEventListener('click', async function(){
-    try{
-        const response = await fetch('/notes');
-        if(response.ok){
-            const notes = await response.json();
-            console.log(notes); // Debugging: Check if notes are fetched correctly
-            displayNotes(notes);
+    // try{
+    //     const response = await fetch('/notes');
+    //     if(response.ok){
+    //         const notes = await response.json();
+    //         console.log(notes); // Debugging: Check if notes are fetched correctly
+    //         displayNotes(notes);
+    //     } else {
+    //         console.error('Failed to fetch notes');
+    //     }
+    // } catch (err) {
+    //     console.error('Error fetching notes:', err);
+    // }
+    refreshNotes();
+});
+
+//event listener for new note button 
+// creates a modal 
+document.getElementById('new-note-button').addEventListener('click', function() {
+    console.log("modal up!")
+    clearForm();
+    $('#newNoteModal').modal('show'); // Use jQuery to show the modal
+});
+
+function clearForm() {
+    document.getElementById('note-title').value = '';
+    document.getElementById('note-content').value = '';
+}
+
+//Event listen to capture the form submission
+document.getElementById('new-note-form').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const title = document.getElementById('note-title').value;
+    const content = document.getElementById('note-content').value;
+
+    // Debugging: Check the collected values
+    console.log(`Title: ${title}, Content: ${content}`);
+
+    try {
+        const response = await fetch('/note', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ title, content }),
+        });
+
+        if (response.ok) {
+            const newNoteText = await response.json();
+            console.log('New note added:', newNote);
+
+            // Optionally close the modal
+            $('#newNoteModal').modal('hide');
+
+            console.log("refreshing notes")
+            // Refresh the list of notes
+            refreshNotes();
+            console.log("note refreshed")
         } else {
-            console.error('Failed to fetch notes');
+            console.error('Failed to add note');
         }
     } catch (err) {
-        console.error('Error fetching notes:', err);
+        console.error('Error adding note:', err);
     }
 });
+
 
 // Function to display notes
 function displayNotes(notes) {
@@ -77,5 +130,21 @@ async function handleDelete(event) {
         }
     } catch (err) {
         console.error('Error deleting note:', err);
+    }
+}
+
+// Function to refresh the notes list
+async function refreshNotes() {
+    try {
+        const response = await fetch('/notes');
+        if (response.ok) {
+            const notes = await response.json();
+            console.log(notes); // Debugging: Check if notes are fetched correctly
+            displayNotes(notes);
+        } else {
+            console.error('Failed to fetch notes');
+        }
+    } catch (err) {
+        console.error('Error fetching notes:', err);
     }
 }

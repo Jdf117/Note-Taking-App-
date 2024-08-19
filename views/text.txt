@@ -1,0 +1,67 @@
+//Get all Notes using button on index page 
+const notesContainer = document.getElementById('notesContainer');
+
+document.getElementById('get-notes-button').addEventListener('click', async function(){
+    try{
+        const response = await fetch('/notes');
+        if(response.ok){
+            const notes = await response.json();
+            console.log(notes);
+            displayNotes(notes);
+        } else {
+            console.error('Failed to fetch notes');
+        }
+    } catch (err) {
+        console.error('Error fetching notes:', err);
+    }
+});
+
+//
+
+function displayNotes(notes) {
+    
+    notesContainer.innerHTML = '';
+    console.log("div created");
+
+    notes.forEach(note => {
+        const card = document.createElement('div');
+        card.className = 'col-md-4 mb-4';
+
+        card.innerHTML = `
+        
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">${note.title}</h5>
+                    <h7 class="text-secondary">${note.date}</h7>
+                    <p class="card-text">${note.content}</p>
+                    <button id="update-button" type="button" class="btn btn-primary"> Update </button>
+                    <button id="delete-button"  type="button" class="btn btn-danger" data-id="${note._id}"> Delete </button>
+                </div>
+            </div>
+        
+        `;
+
+        notesContainer.appendChild(card);
+    });
+
+}
+
+
+
+notesContainer.querySelectorAll('delete-button').addEventListener('click', async function(event){
+    //if(event.target.id.startsWith('delete-button')){
+        console.log("delete event");
+        const noteId = event.target.getAttribute('data-id');
+        try{
+            const response = await fetch(`/notes/${note._Id}`);
+            if(response.ok){
+                console.log(`Note ${noteId} deleted successfully`);
+                // Optionally re-fetch or update the displayed notes here
+            } else {
+                console.error('Failed to delete note');
+            }
+        } catch (err) {
+            console.error('Error deleting note:', err);
+        }
+   // }
+});

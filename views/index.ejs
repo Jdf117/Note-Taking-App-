@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Note-It! App</title>
 </head>
 <body>
@@ -11,11 +12,44 @@
     <h1>Welcome to Note-it! </h1>
 
     <button id="get-notes-button" class = "btn btn-secondary btn-lg "> Get Notes</button>
-    <button id="get-notes-button" class = "btn btn-secondary btn-lg "> New Note</button>
+   
+<!-- New Note Button -->
+<button id="new-note-button" class="btn btn-primary btn-lg">New Note</button>
+
+<!-- Modal Structure -->
+<div class="modal fade" id="newNoteModal" tabindex="-1" role="dialog" aria-labelledby="newNoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newNoteModalLabel">Create New Note</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="new-note-form">
+                    <div class="form-group">
+                        <label for="note-title">Title</label>
+                        <input type="text" class="form-control" id="note-title" placeholder="Enter title">
+                    </div>
+                    <div class="form-group">
+                        <label for="note-content">Content</label>
+                        <textarea class="form-control" id="note-content" rows="3" placeholder="Enter content"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Note</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <div id="notesContainer" class="card-deck">
 
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
     <script type="application/x-javascript" src="../scripts/script.js" ></script>
 </body>
 </html>
