@@ -9,7 +9,7 @@ Dependencies required to run the app:
 - nodemon
 
 App purpose:
-To allow users to store and edit personal notes. Notes are created and stored in the MongoDB database which can be accessed by performance CRUD operations.
+To allow users to store and edit personal notes. Notes are created and stored in the MongoDB database which can be accessed by performing CRUD operations.
 
 Operations:
 
