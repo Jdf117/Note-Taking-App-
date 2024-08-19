@@ -43,6 +43,23 @@
     </div>
 </div>
 
+<!-- update model structure -->
+ <!-- Include this in your index.ejs file -->
+<div id="updateModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h2>Update Note</h2>
+      <form id="updateForm">
+        <input type="hidden" id="noteId" name="noteId">
+        <label for="noteTitle">Title:</label>
+        <input type="text" id="noteTitle" name="title" required>
+        <label for="noteContent">Content:</label>
+        <textarea id="noteContent" name="content" required></textarea>
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </div>
+  
 
     <div id="notesContainer" class="card-deck">
 
