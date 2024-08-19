@@ -8,9 +8,9 @@ const { requiresAuth } = require("express-openid-connect");
 const Note = schema.Note;
 
 //Gets the full list of notes
-router.get("/notes",requiresAuth(), async (req, res) => {
+router.get("/notes", async (req, res) => {
     console.log("finding notes");
-    const  notes = await Note.find(user_id);
+    const  notes = await Note.find();
 
     if(notes.length > 0){
         console.log("Notes exist");
