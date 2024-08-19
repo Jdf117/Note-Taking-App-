@@ -51,9 +51,6 @@ router.delete('/notes/:id', async (req, res) => {
             await Note.deleteOne({id});
             res.status(200).send("Note deleted successfully");
         } 
-        //else {
-            //res.status(404).send("Note not found");
-        //}
 
     } catch(err){
         res.status(404).send("Could not delete the note");
@@ -79,7 +76,7 @@ router.delete('/delete-notes', async (req,res) => {
 //Update Note via ID 
 router.put("/update-note/:id", async (req, res) => {
     const noteId = parseInt(req.params.id);
-    //const notes = await Note.find();
+
  
     try{
         const updatedNote = await Note.findOneAndUpdate(
@@ -97,16 +94,6 @@ router.put("/update-note/:id", async (req, res) => {
         } else {
             res.status(404).send("Note not found");
         }
-        //Below code does not work because it only updates the local notes array and not saving these changes to the database
-        // const noteIndex = notes.findIndex((Note) => Note.id == noteId );
-        // console.log("noteIndex = " + noteIndex);
-
-        // if(noteIndex != -1) {
-        //     notes[noteIndex].title = req.body.title;
-        //     notes[noteIndex].content = req.body.content;
-        //     res.status(200).send("Note updated successfully");
-        //     console.log(notes);
-        // } 
     } catch(err){
         console.error(err);
         res.status(500).send("Could not update the note");

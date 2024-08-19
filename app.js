@@ -12,7 +12,7 @@ const { requiresAuth } = require('express-openid-connect');
 const PORT = 3000;
 
 const notesRouter = require("./routes/notesRouter");
-//const User = require("./models/userSchema");
+
 
 app.use(express.json());
 app.use(bodyParser.json());
@@ -55,7 +55,6 @@ app.use(auth(config));
 
 // req.isAuthenticated is provided from the auth router
 app.get('/', (req, res) => {
-  //res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out')
   if(!req.oidc.isAuthenticated()){
     res.redirect('/login');
   } else {
@@ -71,9 +70,6 @@ app.get('/profile', requiresAuth(), (req, res) => {
   res.send(JSON.stringify(req.oidc.user));
 });
 
-// let Notes = [
-//     { title: 'Welcome to Note-it!', content: "Start adding notes today!"}
-// ];
 
 app.get("/", (req, res) => {
     res.render("index");

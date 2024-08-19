@@ -1,17 +1,6 @@
-// // Get all Notes using button on index page 
+//Get all Notes using button on index page 
 document.getElementById('get-notes-button').addEventListener('click', async function(){
-    // try{
-    //     const response = await fetch('/notes');
-    //     if(response.ok){
-    //         const notes = await response.json();
-    //         console.log(notes); // Debugging: Check if notes are fetched correctly
-    //         displayNotes(notes);
-    //     } else {
-    //         console.error('Failed to fetch notes');
-    //     }
-    // } catch (err) {
-    //     console.error('Error fetching notes:', err);
-    // }
+
     refreshNotes();
 });
 
@@ -20,7 +9,7 @@ document.getElementById('get-notes-button').addEventListener('click', async func
 document.getElementById('new-note-button').addEventListener('click', function() {
     console.log("modal up!")
     clearForm();
-    $('#newNoteModal').modal('show'); // Use jQuery to show the modal
+    $('#newNoteModal').modal('show'); 
 });
 
 function clearForm() {
@@ -90,25 +79,24 @@ function displayNotes(notes) {
         `;
 
         notesContainer.appendChild(card);
-        console.log(`Card for note ${note.id} added.`); // Debugging: Confirm card creation
+        console.log(`Card for note ${note.id} added.`); 
     });
 
     // Add event listener for delete buttons
     const deleteButtons = notesContainer.querySelectorAll('.delete-button');
     deleteButtons.forEach(button => {
         button.addEventListener('click', handleDelete);
-        console.log(`Event listener attached to ${button.id}`); // Debugging: Confirm listener attachment
+        console.log(`Event listener attached to ${button.id}`); 
     });
 
-    //add event listener for Update button
-    //update button should bring up a modul with the existing note title and content. Allowing you to edit and make updates.
+   
 }
 
 // Event handler for delete button clicks
 async function handleDelete(event) {
-    console.log("Delete event triggered."); // Debugging: Check if event is captured
+    console.log("Delete event triggered."); 
     const noteId = event.target.getAttribute('data-id');
-    console.log(`Deleting note with ID: ${noteId}`); // Debugging: Confirm the note ID to be deleted
+    console.log(`Deleting note with ID: ${noteId}`); 
     try{
         console.log("try event")
         const response = await fetch(`/notes/${noteId}`, {
@@ -117,8 +105,6 @@ async function handleDelete(event) {
         console.log(response);
         if(response.ok){
             console.log(`Note ${noteId} deleted successfully`);
-            // Optionally re-fetch or update the displayed notes here
-            // Remove the card from the DOM
             const cardToRemove = event.target.closest('.card');
                 if (cardToRemove) {
                     cardToRemove.remove();
@@ -139,7 +125,7 @@ async function refreshNotes() {
         const response = await fetch('/notes');
         if (response.ok) {
             const notes = await response.json();
-            console.log(notes); // Debugging: Check if notes are fetched correctly
+            console.log(notes); 
             displayNotes(notes);
         } else {
             console.error('Failed to fetch notes');
